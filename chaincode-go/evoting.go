@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
-	"https://github.com/Hsin75c/bc-evoting/tree/main/chaincode-go/chaincode"
+	"github.com/Hsin75c/bc-evoting/tree/main/chaincode-go/chaincode"
 )
 
 func main() {
