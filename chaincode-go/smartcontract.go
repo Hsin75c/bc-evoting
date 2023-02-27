@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"time"
+	"strconv"
 
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
 )
@@ -19,28 +19,30 @@ type Poll struct {
 	name          	string 		`json:"name"`
 	researcher_id   int     	`json:"researcher_id"`
 	description     string 		`json:"description"`
-	startDate       time.Time   `json:"startDate"`
-	endDate			time.Time   `json:"endDate"`
+	startDate       string      `json:"startDate"`
+	endDate			string      `json:"endDate"`
+	status          string      `json:"status"`
 }
 
 // InitLedger adds the live testing poll into the ledger
 func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) error {
 	polls := []Poll{
-		{poll_id: 1, 
-		 name: "Does blockchain increase participation in polls for academic research?",
-		 researcher_id: 1,
-		 description: "Polling is used by sociologists for academic research. \nHowever, the participation rate has decreased over the years due to lack of privacy, ease of use & accessibility.  \nFrom recent research, using blockchain technology addresses these aforementioned issues.  \nThis survey gathers public opinion to test this hypothesis.",
-		 startDate: "2023-01-02",
-		 endDate: "2023-06-07"},
-	}
-
+		Poll{poll_id: 1, 
+			 name: "Does blockchain increase participation in polls for academic research?",
+		 	 researcher_id: 1,
+		 	 description: "Polling is used by sociologists for academic research. \nHowever, the participation rate has decreased over the years due to lack of privacy, ease of use & accessibility.  \nFrom recent research, using blockchain technology addresses these aforementioned issues.  \nThis survey gathers public opinion to test this hypothesis.",
+			 startDate: "2023-01-02",
+		 	 endDate: "2023-06-07",
+		 	 status: "Ongoing"},
+		}
+		
 	for _, poll := range polls {
 		pollJSON, err := json.Marshal(poll)
 		if err != nil {
 			return err
 		}
 
-		err = ctx.GetStub().PutState(poll.poll_id, pollJSON)
+		err = ctx.GetStub().PutState("Poll"+strconv.Itoa(poll.poll_id), pollJSON)
 		if err != nil {
 			return fmt.Errorf("failed to put to world state. %v", err)
 		}
@@ -70,7 +72,7 @@ func (s *SmartContract) GetAllPolls(ctx contractapi.TransactionContextInterface)
 		if err != nil {
 			return nil, err
 		}
-		polls = append(poll, &poll)
+		polls = append(polls, &poll)
 	}
 
 	return polls, nil
