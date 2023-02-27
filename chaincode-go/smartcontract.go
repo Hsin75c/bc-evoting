@@ -29,10 +29,7 @@ func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) 
 		{poll_id: 1, 
 		 name: "Does blockchain increase participation in polls for academic research?",
 		 researcher_id: 1,
-		 description: "Polling is used by sociologists for academic research. 
-				However, the participation rate has decreased over the years due to lack of privacy, ease of use & accessibility.
-				From recent research, using blockchain technology addresses these aforementioned issues.
-				This survey gathers public opinion to test this hypothesis.",
+		 description: "Polling is used by sociologists for academic research. \nHowever, the participation rate has decreased over the years due to lack of privacy, ease of use & accessibility.  \nFrom recent research, using blockchain technology addresses these aforementioned issues.  \nThis survey gathers public opinion to test this hypothesis.",
 		 startDate: "2023-01-02",
 		 endDate: "2023-06-07"},
 	}
