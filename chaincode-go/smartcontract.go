@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"strconv"
 
 	"github.com/hyperledger/fabric-contract-api-go/contractapi"
 )
@@ -15,9 +14,9 @@ type SmartContract struct {
 
 // Poll describes specified details of what makes up a poll
 type Poll struct {
-	poll_id 		int    		`json:"poll_id"`
+	poll_id 		string    	`json:"poll_id"`
 	name          	string 		`json:"name"`
-	researcher_id   int     	`json:"researcher_id"`
+	researcher_id   string    	`json:"researcher_id"`
 	description     string 		`json:"description"`
 	startDate       string      `json:"startDate"`
 	endDate			string      `json:"endDate"`
@@ -27,9 +26,9 @@ type Poll struct {
 // InitLedger adds the live testing poll into the ledger
 func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) error {
 	polls := []Poll{
-		Poll{poll_id: 1, 
+		Poll{poll_id: "1", 
 			 name: "Does blockchain increase participation in polls for academic research?",
-		 	 researcher_id: 1,
+		 	 researcher_id: "1",
 		 	 description: "Polling is used by sociologists for academic research. \nHowever, the participation rate has decreased over the years due to lack of privacy, ease of use & accessibility.  \nFrom recent research, using blockchain technology addresses these aforementioned issues.  \nThis survey gathers public opinion to test this hypothesis.",
 			 startDate: "2023-01-02",
 		 	 endDate: "2023-06-07",
@@ -42,7 +41,7 @@ func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) 
 			return err
 		}
 
-		err = ctx.GetStub().PutState("Poll"+strconv.Itoa(poll.poll_id), pollJSON)
+		err = ctx.GetStub().PutState(poll.poll_id, pollJSON)
 		if err != nil {
 			return fmt.Errorf("failed to put to world state. %v", err)
 		}
