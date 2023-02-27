@@ -14,25 +14,17 @@ type SmartContract struct {
 
 // Poll describes specified details of what makes up a poll
 type Poll struct {
-	poll_id 		string    	`json:"poll_id"`
-	name          	string 		`json:"name"`
-	researcher_id   string    	`json:"researcher_id"`
-	description     string 		`json:"description"`
-	startDate       string      `json:"startDate"`
-	endDate			string      `json:"endDate"`
-	status          string      `json:"status"`
+	ID 		        string    	`json:"ID"`
+	Name          	string 		`json:"Name"`
+	Researcher      string    	`json:"Researcher"`
+	Description     string 		`json:"Description"`
+	Status          string      `json:"Status"`
 }
 
 // InitLedger adds the live testing poll into the ledger
 func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) error {
 	polls := []Poll{
-		Poll{poll_id: "1", 
-			 name: "Does blockchain increase participation in polls for academic research?",
-		 	 researcher_id: "1",
-		 	 description: "Polling is used by sociologists for academic research. \nHowever, the participation rate has decreased over the years due to lack of privacy, ease of use & accessibility.  \nFrom recent research, using blockchain technology addresses these aforementioned issues.  \nThis survey gathers public opinion to test this hypothesis.",
-			 startDate: "2023-01-02",
-		 	 endDate: "2023-06-07",
-		 	 status: "Ongoing"},
+			{ID: "poll1", Name: "e", Researcher: "e", Description: "e", Status: "e"},
 		}
 		
 	for _, poll := range polls {
@@ -41,7 +33,7 @@ func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) 
 			return err
 		}
 
-		err = ctx.GetStub().PutState(poll.poll_id, pollJSON)
+		err = ctx.GetStub().PutState(poll.ID, pollJSON)
 		if err != nil {
 			return fmt.Errorf("failed to put to world state. %v", err)
 		}

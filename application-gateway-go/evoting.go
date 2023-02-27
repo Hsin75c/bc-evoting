@@ -2,10 +2,8 @@ package main
 
 import (
 	"bytes"
-	"context"
 	"crypto/x509"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"os"
 	"path"
@@ -13,15 +11,13 @@ import (
 
 	"github.com/hyperledger/fabric-gateway/pkg/client"
 	"github.com/hyperledger/fabric-gateway/pkg/identity"
-	"github.com/hyperledger/fabric-protos-go-apiv2/gateway"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
-	"google.golang.org/grpc/status"
 )
 
 const (
 	mspID        = "Org1MSP"
-	cryptoPath   = "../../test-network/organizations/peerOrganizations/org1.example.com"
+	cryptoPath   = "../../../test-network/organizations/peerOrganizations/org1.example.com"
 	certPath     = cryptoPath + "/users/User1@org1.example.com/msp/signcerts/cert.pem"
 	keyPath      = cryptoPath + "/users/User1@org1.example.com/msp/keystore/"
 	tlsCertPath  = cryptoPath + "/peers/peer0.org1.example.com/tls/ca.crt"
@@ -159,4 +155,12 @@ func getAllPolls(contract *client.Contract) {
 	result := formatJSON(evaluateResult)
 
 	fmt.Printf("*** Result:%s\n", result)
+}
+
+func formatJSON(data []byte) string {
+	var prettyJSON bytes.Buffer
+	if err := json.Indent(&prettyJSON, data, "", "  "); err != nil {
+		panic(fmt.Errorf("failed to parse JSON: %w", err))
+	}
+	return prettyJSON.String()
 }
