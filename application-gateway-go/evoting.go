@@ -30,7 +30,7 @@ const (
 )
 
 var now = time.Now()
-var assetId = fmt.Sprintf("asset%d", now.Unix()*1e3+int64(now.Nanosecond())/1e6)
+var pollId = fmt.Sprintf("poll%d", now.Unix()*1e3+int64(now.Nanosecond())/1e6)
 
 func main() {
 	
@@ -71,7 +71,7 @@ func main() {
 	contract := network.GetContract(chaincodeName)
 
 	initLedger(contract)
-	getAllAssets(contract)
+	getAllPolls(contract)
 }
 
 func newGrpcConnection() *grpc.ClientConn {
@@ -139,7 +139,7 @@ func newSign() identity.Sign {
 }
 
 func initLedger(contract *client.Contract) {
-	fmt.Printf("\n--> Submit Transaction: InitLedger, function creates the initial set of assets on the ledger \n")
+	fmt.Printf("\n--> Submit Transaction: InitLedger, function creates the initial set of polls on the ledger \n")
 
 	_, err := contract.SubmitTransaction("InitLedger")
 	if err != nil {
@@ -149,10 +149,10 @@ func initLedger(contract *client.Contract) {
 	fmt.Printf("*** Transaction committed successfully\n")
 }
 
-func getAllAssets(contract *client.Contract) {
-	fmt.Println("\n--> Evaluate Transaction: GetAllAssets, function returns all the current assets on the ledger")
+func getAllPolls(contract *client.Contract) {
+	fmt.Println("\n--> Evaluate Transaction: GetAllPolls, function returns all the current polls on the ledger")
 
-	evaluateResult, err := contract.EvaluateTransaction("GetAllAssets")
+	evaluateResult, err := contract.EvaluateTransaction("GetAllPolls")
 	if err != nil {
 		panic(fmt.Errorf("failed to evaluate transaction: %w", err))
 	}
