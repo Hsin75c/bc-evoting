@@ -9,8 +9,13 @@ pushd ../../test-network
 popd
 
 # run gateway 
-pushd /application-gateway-go
-go evoting.go
+pushd application-gateway-go
+go run evoting.go
+popd
+
+# start API server
+pushd rest-api-go
+go run main.go
 popd
 
 cat <<EOF

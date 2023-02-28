@@ -74,7 +74,7 @@ func main() {
 	createPoll(contract)
 	readPollByID(contract)
 	updatePollByID(contract)
-	readPollById(contract)
+	readPollByID(contract)
 	deletePollByID(contract)
 }
 
