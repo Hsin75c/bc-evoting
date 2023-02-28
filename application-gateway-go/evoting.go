@@ -66,8 +66,16 @@ func main() {
 	network := gw.GetNetwork(channelName)
 	contract := network.GetContract(chaincodeName)
 
+	// initialize the ledger & display
 	initLedger(contract)
 	getAllPolls(contract)
+	
+	// showcase CRUD functions
+	createPoll(contract)
+	readPollByID(contract)
+	updatePollByID(contract)
+	readPollById(contract)
+	deletePollByID(contract)
 }
 
 func newGrpcConnection() *grpc.ClientConn {
@@ -155,6 +163,52 @@ func getAllPolls(contract *client.Contract) {
 	result := formatJSON(evaluateResult)
 
 	fmt.Printf("*** Result:%s\n", result)
+}
+
+func createPoll(contract *client.Contract) {
+	fmt.Printf("\n--> Submit Transaction: CreatePoll, creates new poll with ID, Name, Researcher, Description and Status arguments \n")
+
+	_, err := contract.SubmitTransaction("CreatePoll", "2", "Test", "Hsin", "Test Poll to showcase CRUD functions", "Ongoing")
+	if err != nil {
+		panic(fmt.Errorf("failed to submit transaction: %w", err))
+	}
+
+	fmt.Printf("*** Transaction committed successfully\n")
+}
+
+// Evaluate a transaction by pollID to query ledger state.
+func readPollByID(contract *client.Contract) {
+	fmt.Printf("\n--> Evaluate Transaction: ReadPoll, function returns poll attributes\n")
+
+	evaluateResult, err := contract.EvaluateTransaction("ReadPoll", "2")
+	if err != nil {
+		panic(fmt.Errorf("failed to evaluate transaction: %w", err))
+	}
+	result := formatJSON(evaluateResult)
+
+	fmt.Printf("*** Result:%s\n", result)
+}
+
+func updatePollByID(contract *client.Contract) {
+	fmt.Printf("\n--> Submit Transaction: UpdatePoll, updates existing poll with ID, Name, Researcher, Description and Status arguments \n")
+
+	_, err := contract.SubmitTransaction("UpdatePoll", "2", "Test CRUD", "Hsin", "Updated description", "Completed")
+	if err != nil {
+		panic(fmt.Errorf("failed to submit transaction: %w", err))
+	}
+
+	fmt.Printf("*** Transaction committed successfully\n")
+}
+
+func deletePollByID(contract *client.Contract) {
+	fmt.Printf("\n--> Submit Transaction: DeletePoll, deletes existing poll\n")
+
+	_, err := contract.SubmitTransaction("DeletePoll", "2")
+	if err != nil {
+		panic(fmt.Errorf("failed to submit transaction: %w", err))
+	}
+
+	fmt.Printf("*** Transaction committed successfully\n")
 }
 
 func formatJSON(data []byte) string {
