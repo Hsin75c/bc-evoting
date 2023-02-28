@@ -21,6 +21,32 @@ type Poll struct {
 	Status          string      `json:"Status"`
 }
 
+// Question describes specified details of what makes up a question.
+type Question struct {
+	pollID 		    string    	`json:"pollID"`
+	Order          	string 		`json:"Order"`
+	Question      	string    	`json:"Question"`
+}
+
+// Answer describes specified details of what makes up an answer.
+type Answer struct {
+	pollID 		    string    	`json:"pollID"`
+	Order          	string 		`json:"Name"`
+	Answer      	string    	`json:"Answer"`
+}
+
+// Vote describes specified details of what makes up a vote.
+type Vote struct {
+	ID 		        string    	`json:"ID"`
+	pollID          string 		`json:"pollID"`
+	BCReceipt	    string    	`json:"BCReceipt"`
+	Answers			[]*Answer	`json:"Answers"`
+	Age 		    string 		`json:"Age"`
+	Gender          string      `json:"Status"`
+	Occupation	    string 		`json:"Age"`
+	Country         string      `json:"Status"`
+}
+
 // InitLedger adds the live testing poll into the ledger.
 func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) error {
 	polls := []Poll{
