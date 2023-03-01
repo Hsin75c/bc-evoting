@@ -1,4 +1,4 @@
-module github/Hsin75c/bc-evoting/chaincode-go
+module github.com/Hsin75c/bc-evoting/chaincode-go
 
 go 1.13
 
