@@ -1,4 +1,4 @@
-package main
+package chaincode
 
 import (
 	"encoding/json"
@@ -21,34 +21,8 @@ type Poll struct {
 	Status          string      `json:"Status"`
 }
 
-// Question describes specified details of what makes up a question.
-type Question struct {
-	pollID 		    string    	`json:"pollID"`
-	Order          	string 		`json:"Order"`
-	Question      	string    	`json:"Question"`
-}
-
-// Answer describes specified details of what makes up an answer.
-type Answer struct {
-	pollID 		    string    	`json:"pollID"`
-	Order          	string 		`json:"Name"`
-	Answer      	string    	`json:"Answer"`
-}
-
-// Vote describes specified details of what makes up a vote.
-type Vote struct {
-	ID 		        string    	`json:"ID"`
-	pollID          string 		`json:"pollID"`
-	BCReceipt	    string    	`json:"BCReceipt"`
-	Answers			[]*Answer	`json:"Answers"`
-	Age 		    string 		`json:"Age"`
-	Gender          string      `json:"Status"`
-	Occupation	    string 		`json:"Age"`
-	Country         string      `json:"Status"`
-}
-
-// InitLedger adds the live testing poll into the ledger.
-func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) error {
+// InitLedgerPoll adds the live testing poll into the ledger.
+func (s *SmartContract) InitLedgerPoll(ctx contractapi.TransactionContextInterface) error {
 	polls := []Poll{
 			{ID: "1", Name: "Does blockchain increase participation in polls for academic research?", Researcher: "UTAR", Description: "Polling is used by sociologists for academic research. \nHowever, the participation rate has decreased over the years due to lack of privacy, ease of use & accessibility. \nFrom recent research, using blockchain technology addresses these aforementioned issues. \nThis survey gathers public opinion to test this hypothesis.", Status: "Ongoing"},
 		}
@@ -151,7 +125,7 @@ func (s *SmartContract) DeletePoll(ctx contractapi.TransactionContextInterface, 
 	return ctx.GetStub().DelState(id)
 }
 
-// pollExists returns true when poll with given ID exists in world state
+// PollExists returns true when poll with given ID exists in world state
 func (s *SmartContract) PollExists(ctx contractapi.TransactionContextInterface, id string) (bool, error) {
 	pollJSON, err := ctx.GetStub().GetState(id)
 	if err != nil {
@@ -186,19 +160,4 @@ func (s *SmartContract) GetAllPolls(ctx contractapi.TransactionContextInterface)
 	}
 
 	return polls, nil
-}
-
-// Create the chaincode & start it. Catch errors.
-func main() {
-
-	chaincode, err := contractapi.NewChaincode(new(SmartContract))
-
-	if err != nil {
-		fmt.Printf("Error create e-voting chaincode: %s", err.Error())
-		return
-	}
-
-	if err := chaincode.Start(); err != nil {
-		fmt.Printf("Error starting e-voting chaincode: %s", err.Error())
-	}
 }

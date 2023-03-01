@@ -67,7 +67,7 @@ func main() {
 	contract := network.GetContract(chaincodeName)
 
 	// initialize the ledger & display
-	initLedger(contract)
+	initLedgerPoll(contract)
 	getAllPolls(contract)
 	
 	// showcase CRUD functions
@@ -142,7 +142,7 @@ func newSign() identity.Sign {
 	return sign
 }
 
-func initLedger(contract *client.Contract) {
+func initLedgerPoll(contract *client.Contract) {
 	fmt.Printf("\n--> Submit Transaction: InitLedger, function creates the initial set of polls on the ledger \n")
 
 	_, err := contract.SubmitTransaction("InitLedger")

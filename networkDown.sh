@@ -1,5 +1,5 @@
 # Bring the bc network down
-pushd ../test-network
+pushd bc-network
 ./network.sh down
 popd
 
